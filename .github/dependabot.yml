@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # 1. Keep npm dependencies updated
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-type: "all"
+    open-pull-requests-limit: 10
+
+  # 2. Keep GitHub Actions updated (CI/CD workflows)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

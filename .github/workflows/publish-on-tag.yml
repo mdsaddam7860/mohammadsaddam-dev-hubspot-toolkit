@@ -1,0 +1,58 @@
+name: Publish npm on tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'    # matches v1.2.3, v0.2.0 etc.
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test-build-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (with tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint || echo "no lint script"
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build || echo "no build step defined"
+
+      - name: Show tag (for debugging)
+        run: echo "Publishing tag $GITHUB_REF"
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          # safety check: ensure package.json version matches the tag (optional but recommended)
+          TAG=${GITHUB_REF#refs/tags/}
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          echo "Tag=${TAG}, package.json version=${PKG_VERSION}"
+          if [ "$TAG" != "v$PKG_VERSION" ]; then
+            echo "::error ::Tag name (v$PKG_VERSION) mismatch with package.json version ($PKG_VERSION). Aborting publish."
+            exit 1
+          fi
+
+          # publish (will fail if already published)
+          npm publish --access public

@@ -1,0 +1,60 @@
+name: Publish → npm (major) on production merge
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+jobs:
+  publish-major:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'production' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository (with tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build || echo "no build step defined"
+
+      - name: Configure Git for version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump major version
+        run: |
+          npm version major -m "chore(release): %s [skip ci]"
+
+      - name: Push version commit and tags back to origin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin --follow-tags
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --access public

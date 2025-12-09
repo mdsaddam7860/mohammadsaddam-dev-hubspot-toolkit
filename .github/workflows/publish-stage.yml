@@ -1,0 +1,62 @@
+name: Publish → npm (minor) on stage merge
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write  # needed to push commits/tags
+  id-token: write
+
+jobs:
+  publish-minor:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'stage' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository (with tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false  # we'll set auth explicitly when pushing
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build || echo "no build step defined"
+
+      - name: Configure Git for version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump minor version
+        run: |
+          # create a commit and tag like: chore(release): v0.2.0
+          npm version minor -m "chore(release): %s [skip ci]"
+
+      - name: Push version commit and tags back to origin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # set remote using token so push works in CI
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin --follow-tags
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          # ensure npm auth is set by setup-node; publish
+          npm publish --access public
