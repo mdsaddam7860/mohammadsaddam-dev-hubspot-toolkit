@@ -1,0 +1,38 @@
+{
+  "name": "@mohammadsaddam-dev/hubspot-toolkit",
+  "version": "0.2.64",
+  "description": "Opinionated lightweight HubSpot helper toolkit (contacts, companies, deals, associations, properties)",
+  "main": "src/index.js",
+  "types": "src-ts/index.d.ts",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build:ts": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .js,.ts",
+    "test": "node test/run-tests.js",
+    "build:watch": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "hubspot",
+    "crm",
+    "sdk",
+    "integration"
+  ],
+  "author": "Mohammad Saddam",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3"
+  }
+}
