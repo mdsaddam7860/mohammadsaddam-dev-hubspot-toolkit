@@ -51,4 +51,31 @@ async function fetchAllPages(fetchPageFn, pageSize = 100) {
   return results;
 }
 
-export { clean, toPropertiesObject, fetchAllPages };
+async function retryRequest(fn, attempt = 1, maxRetries = 3, baseDelay = 300) {
+  try {
+    return await fn();
+  } catch (err) {
+    const status = err?.response?.status;
+
+    const retryable =
+      status === 429 ||
+      (status >= 500 && status <= 599) ||
+      err.code === 'ECONNRESET' ||
+      err.code === 'ETIMEDOUT' ||
+      err.code === 'ECONNABORTED';
+
+    if (!retryable || attempt > maxRetries) {
+      throw err;
+    }
+
+    let delay = baseDelay * Math.pow(2, attempt - 1);
+    const retryAfter = err?.response?.headers?.['retry-after'];
+    if (retryAfter) delay = parseInt(retryAfter, 10) * 1000;
+    console.debug(`[hubspot] retry ${attempt}/${maxRetries}`, err.message);
+
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    return retryRequest(fn, attempt + 1, maxRetries, baseDelay);
+  }
+}
+
+export { clean, toPropertiesObject, fetchAllPages, retryRequest };
