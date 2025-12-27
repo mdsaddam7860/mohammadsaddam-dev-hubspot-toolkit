@@ -1,4 +1,5 @@
-import { toPropertiesObject, clean, fetchAllPages } from './utils.js';
+import { toPropertiesObject } from '../utils/toPropertiesObject.js';
+import { fetchAllPages } from '../utils/fetchAllPages.js';
 
 // Old implementation
 
