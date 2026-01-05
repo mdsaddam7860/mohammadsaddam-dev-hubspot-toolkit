@@ -70,8 +70,6 @@ If both are provided, accessToken is used.
 ### ➤ Create Contact
 
 ```js
-import { createClient } from "@mohammadsaddam-dev/hubspot-toolkit";
-const hubspot = createClient(cfg);
 
 await hubspot.contacts.create({
   email: "john@example.com",
@@ -87,7 +85,7 @@ console.log(response);
 ### ➤ Update Contact
 
 ```js
-await contacts.update("12345", {
+await contacts.updateContact("12345", {
   firstname: "Updated Name",
 });
 ```
@@ -546,7 +544,7 @@ This is the recommended and safest approach.
 ---
 
 
-## Project Structure
+### Project Structure
 
 ```
 src/
@@ -568,9 +566,8 @@ src/
 
 ```
 
----
 
-## Environment Variables
+### Environment Variables
 
 ```
 HUBSPOT_API_KEY=your-private-app-key
@@ -579,7 +576,7 @@ HUBSPOT_ACCESS_TOKEN=your-private-access-token
 
 ---
 
-## Error Handling
+### Error Handling
 
 ```js
 try {
@@ -589,117 +586,116 @@ try {
 }
 ```
 
----
 
 ## Hubspot Limitations
 
-### This toolkit is a thin abstraction over the HubSpot CRM APIs and therefore inherits the same platform limitations and behaviors.
+- This toolkit is a thin abstraction over the HubSpot CRM APIs and therefore inherits the same platform limitations and behaviors.
 
-### API Rate Limits
+- API Rate Limits
 
-### HubSpot enforces strict rate limits per app and account
+- HubSpot enforces strict rate limits per app and account
 
-### Excessive requests may result in 429 Too Many Requests
+- Excessive requests may result in 429 Too Many Requests
 
-### This toolkit does not retry automatically unless your HTTP client is configured to do so
+- This toolkit does not retry automatically unless your HTTP client is configured to do so
+
+
+
+## Recommendation:
+- Add retry logic with exponential backoff and respect the Retry-After header.
+
+- Search & Pagination
+
+- HubSpot does not provide a “list all” endpoint
+
+- All bulk reads use the /search API with cursor-based pagination
+
+- Maximum search page size is 100 records
+
+## Impact:
+
+- Large datasets require multiple API calls
+
+- Results may be eventually consistent
+
+- Upsert Behavior
+
+- HubSpot does not support native upsert operations
+
+- The toolkit implements upsert as:
+
+- Search by a unique property
+
+- Update if found
+
+- Create if not found
+
+## Caveats:
+
+- Duplicate records may occur if uniqueness is not enforced in HubSpot
+
+- Search indexing delays can cause race conditions
+
+- Property Constraints
+
+- Property names are immutable once created
+
+- Some property attributes cannot be updated after creation
+
+- Enumeration options cannot be removed if already in use
+
+- Nested objects are not supported as property values
+
+## Associations
+
+- Association types must already exist in HubSpot
+
+- Some object pairs require predefined association types
+
+- Deleting an object automatically removes its associations
+
+- Custom Objects
+
+- Custom object schemas must be created in HubSpot before use
+
+- Object type names (p_xxx, 2-xxxxx) must be exact
+
+- Property and association availability depends on schema configuration
+
+## Error Handling
+
+- API errors are returned directly from HubSpot
+
+- Error messages and formats may change over time
+
+- The toolkit does not mask or normalize HubSpot errors by default
+
+- No Offline Validation
+
+- Invalid requests will fail at the HubSpot API level
+
+## 🧠 Design Philosophy
+
+- This toolkit intentionally:
+
+- Avoids over-abstracting HubSpot behavior
+
+- Keeps API interactions explicit and predictable
+
+- Leaves retries, caching, and advanced validation to the consumer
+
+## 🔮 Planned Improvements (Optional)
+
+- Automatic retry & rate-limit handling
+
+- Idempotent helpers (safe create/update)
+
+- Schema introspection utilities
+
+- Batch operation helpers
 
 ---
 
-### Recommendation:
-### Add retry logic with exponential backoff and respect the Retry-After header.
+### 📝 License
 
-### Search & Pagination
-
-### HubSpot does not provide a “list all” endpoint
-
-### All bulk reads use the /search API with cursor-based pagination
-
-### Maximum search page size is 100 records
-
-### Impact:
-
-### Large datasets require multiple API calls
-
-### Results may be eventually consistent
-
-### Upsert Behavior
-
-### HubSpot does not support native upsert operations
-
-### The toolkit implements upsert as:
-
-### Search by a unique property
-
-### Update if found
-
-### Create if not found
-
-### Caveats:
-
-### Duplicate records may occur if uniqueness is not enforced in HubSpot
-
-### Search indexing delays can cause race conditions
-
-### Property Constraints
-
-### Property names are immutable once created
-
-### Some property attributes cannot be updated after creation
-
-### Enumeration options cannot be removed if already in use
-
-### Nested objects are not supported as property values
-
-### Associations
-
-### Association types must already exist in HubSpot
-
-### Some object pairs require predefined association types
-
-### Deleting an object automatically removes its associations
-
-### Custom Objects
-
-### Custom object schemas must be created in HubSpot before use
-
-### Object type names (p_xxx, 2-xxxxx) must be exact
-
-### Property and association availability depends on schema configuration
-
-### Error Handling
-
-### API errors are returned directly from HubSpot
-
-### Error messages and formats may change over time
-
-### The toolkit does not mask or normalize HubSpot errors by default
-
-### No Offline Validation
-
-### Invalid requests will fail at the HubSpot API level
-
-### 🧠 Design Philosophy
-
-### This toolkit intentionally:
-
-### Avoids over-abstracting HubSpot behavior
-
-### Keeps API interactions explicit and predictable
-
-### Leaves retries, caching, and advanced validation to the consumer
-
-### 🔮 Planned Improvements (Optional)
-
-### Automatic retry & rate-limit handling
-
-### Idempotent helpers (safe create/update)
-
-### Schema introspection utilities
-
-### Batch operation helpers
-
----
-
-## 📝 License
-
-MIT © Mohammad Saddam
+### MIT © Mohammad Saddam

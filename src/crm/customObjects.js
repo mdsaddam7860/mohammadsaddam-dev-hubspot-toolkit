@@ -39,9 +39,34 @@ function makeCustomObject(client, objectType) {
   }
 
   /** Fetch ALL records (auto-pagination) */
+  // async function fetchAll({
+  //   filterGroups = [],
+  //   properties = [],
+  //   limit = SEARCH_LIMIT,
+  // } = {}) {
+  //   let after;
+  //   const results = [];
+
+  //   do {
+  //     const response = await client.post(`${base}/search`, {
+  //       filterGroups,
+  //       properties,
+  //       limit,
+  //       after,
+  //     });
+
+  //     const data = response?.data;
+
+  //     results.push(...(data?.results || []));
+  //     after = data?.paging?.next?.after;
+  //   } while (after);
+
+  //   return results;
+  // }
+
   async function fetchAll({
     filterGroups = [],
-    properties = [],
+    properties = ['hs_object_id'],
     limit = SEARCH_LIMIT,
   } = {}) {
     let after;
@@ -51,12 +76,22 @@ function makeCustomObject(client, objectType) {
       const { data } = await client.post(`${base}/search`, {
         filterGroups,
         properties,
+
         limit,
-        after,
+        ...(after && { after }),
       });
 
-      results.push(...(data.results || []));
-      after = data.paging?.next?.after;
+      // 🔴 HubSpot custom object search limitation
+      if (!data || !Array.isArray(data.results)) {
+        console.warn(
+          `[HubSpot] Search not supported for custom object ${objectType}`,
+          data,
+        );
+        return [];
+      }
+
+      results.push(...data.results);
+      after = data?.paging?.next?.after;
     } while (after);
 
     return results;
