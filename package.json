@@ -12,6 +12,7 @@
     "build:ts": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .js,.ts",
     "test": "echo \"No tests yet\"",
+    "prepublishOnly": "npm test",
     "build:watch": "tsc --watch",
     "type-check": "tsc --noEmit",
     "dev": "ts-node src/index.ts",
