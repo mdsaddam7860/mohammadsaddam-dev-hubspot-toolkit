@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.4 – 2025-12-28
+### Added
+
+  - Added ticket object type
+  - Added `getAllTickets` helper
+  - Added `createTicket` helper
+  - Added `updateTicket` helper
+  - Added `searchTicket` helper
+  -
 ## 0.3.0 – 2025-12-28
 ### Added
 - Added **Custom Objects API support**
