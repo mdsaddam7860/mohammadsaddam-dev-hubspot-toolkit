@@ -3,11 +3,13 @@
 A lightweight and developer-friendly ES Modules toolkit for interacting with HubSpot CRM APIs.  
 Supports Contacts, Companies, Deals, Associations, Custom Properties, Search, Pagination, and clean utility helpers.
 
+
+
 ![npm version](https://img.shields.io/npm/v/@mohammadsaddam-dev/hubspot-toolkit)
 ![npm downloads](https://img.shields.io/npm/dm/@mohammadsaddam-dev/hubspot-toolkit)
 ![license](https://img.shields.io/npm/l/@mohammadsaddam-dev/hubspot-toolkit)
-## GitHub Repository
-[mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit](https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit)
+[![license](https://img.shields.io/npm/l/@mohammadsaddam-dev/hubspot-toolkit)](https://www.npmjs.com/package/@mohammadsaddam-dev/hubspot-toolkit)
+[![build](https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit/actions/workflows/publish-on-tag.yml/badge.svg)](https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit/actions)
 
 
 ## 📚 Table of Contents

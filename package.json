@@ -8,6 +8,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit.git"
+  },
+  "homepage": "https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit#readme"
+  },
   "scripts": {
     "build:ts": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .js,.ts",
