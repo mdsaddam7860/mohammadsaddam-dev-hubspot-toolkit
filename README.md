@@ -6,6 +6,9 @@ Supports Contacts, Companies, Deals, Associations, Custom Properties, Search, Pa
 ![npm version](https://img.shields.io/npm/v/@mohammadsaddam-dev/hubspot-toolkit)
 ![npm downloads](https://img.shields.io/npm/dm/@mohammadsaddam-dev/hubspot-toolkit)
 ![license](https://img.shields.io/npm/l/@mohammadsaddam-dev/hubspot-toolkit)
+## GitHub Repository
+[mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit](https://github.com/mdsaddam7860/mohammadsaddam-dev-hubspot-toolkit)
+
 
 ## 📚 Table of Contents
 
@@ -43,6 +46,7 @@ Supports Contacts, Companies, Deals, Associations, Custom Properties, Search, Pa
 ```bash
 npm install @mohammadsaddam-dev/hubspot-toolkit@latest
 ```
+
 
 
 ---
