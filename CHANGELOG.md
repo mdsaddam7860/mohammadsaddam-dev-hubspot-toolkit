@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0 – 2025-12-28
+### Added
+
+  - Added meetings object type
+  - Added `createMeeting` helper
+  - Added `updateMeeting` helper
+  - Added `searchMeeting` helper
+  - Added notes object type
+  - Added `createNote` helper
+  - Added `updateNote` helper
+  - Added `searchNote` helper
 ## 0.3.4 – 2025-12-28
 ### Added
 
