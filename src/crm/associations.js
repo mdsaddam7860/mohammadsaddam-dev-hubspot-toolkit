@@ -33,20 +33,39 @@ function makeAssociations(client) {
    * - standard ↔ custom
    * - custom ↔ custom
    */
-  async function associate(fromType, fromId, toType, toId, associationType) {
-    if (!fromType || !fromId || !toType || !toId) {
-      throw new Error('fromType, fromId, toType, and toId are required');
+  async function associate(
+    fromType,
+    fromId,
+    toType,
+    toId,
+    associationTypeId,
+    associationCategory = 'HUBSPOT_DEFINED',
+  ) {
+    if (!fromType || !fromId || !toType || !toId || !associationTypeId) {
+      throw new Error(
+        'fromType, fromId, toType, toId, and associationTypeId are required',
+      );
     }
 
-    return client.post(`/crm/v4/associations/${fromType}/${toType}/batch/create`, {
+    const payload = {
       inputs: [
         {
-          from: { id: fromId },
-          to: { id: toId },
-          type: associationType,
+          from: { id: String(fromId) },
+          to: { id: String(toId) },
+          types: [
+            {
+              associationCategory,
+              associationTypeId,
+            },
+          ],
         },
       ],
-    });
+    };
+
+    return client.post(
+      `/crm/v4/associations/${fromType}/${toType}/batch/create`,
+      payload,
+    );
   }
 
   /** Convenience helpers (backward-compatible) */
