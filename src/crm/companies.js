@@ -68,6 +68,19 @@ function makeCompanies(client) {
 
     return allFromList;
   }
+  async function _searchOne(propertyName, value, properties = []) {
+    const body = {
+      filterGroups: [{ filters: [{ propertyName, operator: 'EQ', value }] }],
+      properties,
+      limit: 1,
+    };
+    const res = await client.post(`${base}/search`, body);
+    const data = res && res.data ? res.data : res;
+    return (data.results && data.results[0]) || null;
+  }
+  async function getCompanyByCustomField(propertyName, value, properties = []) {
+    return _searchOne(propertyName, value, properties);
+  }
 
   return {
     createCompany: (props) => client.post(base, toPropertiesObject(props)),
@@ -82,6 +95,7 @@ function makeCompanies(client) {
     updateCompany: (id, props) =>
       client.patch(`${base}/${id}`, toPropertiesObject(props)),
     getAllCompanies,
+    getCompanyByCustomField,
   };
 }
 

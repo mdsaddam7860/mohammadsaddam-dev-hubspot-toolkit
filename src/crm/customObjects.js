@@ -111,6 +111,20 @@ function makeCustomObject(client, objectType) {
     return client.delete(`${base}/${id}`);
   }
 
+  async function _searchOne(propertyName, value, properties = []) {
+    const body = {
+      filterGroups: [{ filters: [{ propertyName, operator: 'EQ', value }] }],
+      properties,
+      limit: 1,
+    };
+    const res = await client.post(`${base}/search`, body);
+    const data = res && res.data ? res.data : res;
+    return (data.results && data.results[0]) || null;
+  }
+  async function getCustomObjectByCustomField(propertyName, value, properties = []) {
+    return _searchOne(propertyName, value, properties);
+  }
+
   /**
    * Upsert (search by unique property)
    * @param {string} uniqueProperty - property name (e.g. "external_id")
@@ -151,6 +165,15 @@ function makeCustomObject(client, objectType) {
       }),
     );
   }
-  return { create, getById, search, fetchAll, update, archive, upsert };
+  return {
+    create,
+    getById,
+    search,
+    fetchAll,
+    update,
+    archive,
+    upsert,
+    getCustomObjectByCustomField,
+  };
 }
 export { makeCustomObject };
