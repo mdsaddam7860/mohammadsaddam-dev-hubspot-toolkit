@@ -68,6 +68,45 @@ function makeAssociations(client) {
     );
   }
 
+  /**
+   * Creates multiple associations in a single API call.
+   * @param {string} fromType - e.g., 'deals'
+   * @param {string} toType - e.g., 'tasks'
+   * @param {Array} associationPairs - Array of { fromId, toId }
+   * @param {number} associationTypeId - The ID for the association type (e.g., 215)
+   */
+  async function batchAssociate(
+    fromType,
+    toType,
+    associationPairs,
+    associationTypeId,
+    associationCategory = 'HUBSPOT_DEFINED',
+  ) {
+    if (!fromType || !toType || !associationPairs || !associationPairs.length) {
+      throw new Error('Missing required parameters for batch association');
+    }
+
+    // Transform your array of IDs into the HubSpot Batch format
+    const payload = {
+      inputs: associationPairs.map((pair) => ({
+        from: { id: String(pair.fromId) },
+        to: { id: String(pair.toId) },
+        types: [
+          {
+            associationCategory,
+            associationTypeId,
+          },
+        ],
+      })),
+    };
+
+    // This sends EVERYTHING in the payload.inputs array in one go
+    return client.post(
+      `/crm/v4/associations/${fromType}/${toType}/batch/create`,
+      payload,
+    );
+  }
+
   /** Convenience helpers (backward-compatible) */
   const associateContactToCompany = (contactId, companyId, type = 'contact_to_company') =>
     associate('contacts', contactId, 'companies', companyId, type);
@@ -85,6 +124,7 @@ function makeAssociations(client) {
     });
 
   return {
+    batchAssociate, // 🔥 NEW (generic) Batch Association
     associate, // 🔥 NEW (generic)
     associateContactToCompany,
     associateContactToDeal,
