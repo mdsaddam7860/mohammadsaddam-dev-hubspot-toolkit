@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0 – 2026-03-30
+### Added
+  - Add rate Limit Logic, also implement metadata in client function to get rate limit info 
+  - Add Typescript functionalities to the hubspot-toolkit
+
+
+## 2.0.1 – 2026-02-27
+### Added
+
 ## 0.7.0 – 2025-12-28
 ### Added
 
