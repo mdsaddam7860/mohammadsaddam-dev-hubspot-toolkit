@@ -11,6 +11,8 @@ function makeContacts(client) {
   /**
    * Internal helper to find a single contact by any property
    */
+
+  // ------------------------------One Contact------------------------------------------------
   async function _searchOne(propertyName, value, properties = []) {
     const body = {
       filterGroups: [{ filters: [{ propertyName, operator: 'EQ', value }] }],
@@ -106,7 +108,12 @@ function makeContacts(client) {
     return allFromList;
   }
 
+  // --------------------------Batch APis---------------------------
+
+  // async function batchCreateContacts()
+
   return {
+    // ------------------------------One Contact------------------------------------------------
     createContact: (properties) => client.post(base, toPropertiesObject(properties)),
     getContact: (id, properties = []) =>
       client.get(`${base}/${id}`, {
@@ -123,6 +130,14 @@ function makeContacts(client) {
     upsertContactByEmail,
     upsertContactByCustomField,
     getAllContacts,
+
+    // --------------------------Batch APis---------------------------
+    batchCreateContact: (payload) => client.post(`${base}/batch/create`, payload),
+    batchSearchContact: (payload) => client.post(`${base}/batch/read`, payload),
+    batchUpdateContact: (payload) => client.post(`${base}/batch/update`, payload),
+    batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload, { params }),
+
+    // Delete Batch Contact Will be added later
   };
 }
 

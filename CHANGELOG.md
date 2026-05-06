@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0 – 2026-05-06
+### Added
+  - Add batch API Function (create,read,update)
 ## 2.1.0 – 2026-03-30
 ### Added
   - Add rate Limit Logic, also implement metadata in client function to get rate limit info 
