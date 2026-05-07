@@ -137,8 +137,6 @@ function makeContacts(client) {
     batchSearchContact: (payload) => client.post(`${base}/batch/read`, payload),
     batchUpdateContact: (payload) => client.post(`${base}/batch/update`, payload),
     batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload),
-
-    // Delete Batch Contact Will be added later
   };
 }
 
