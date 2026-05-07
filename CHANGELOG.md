@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0 – 2026-05-07
+### Added
+  - Add fetch get contact based on idProperty
 ## 2.1.0 – 2026-05-06
 ### Added
   - Add batch API Function (create,read,update)

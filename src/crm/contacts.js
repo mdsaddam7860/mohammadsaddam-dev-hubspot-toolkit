@@ -113,7 +113,7 @@ function makeContacts(client) {
   // async function batchCreateContacts()
 
   return {
-    // ------------------------------One Contact------------------------------------------------
+    // ------------------------------Single Contact------------------------------------------------
     createContact: (properties) => client.post(base, toPropertiesObject(properties)),
     getContact: (id, properties = []) =>
       client.get(`${base}/${id}`, {
@@ -121,6 +121,7 @@ function makeContacts(client) {
           properties: Array.isArray(properties) ? properties.join(',') : properties,
         },
       }),
+    getContactWithParameters: (params) => client.get(`${base}${params}`),
     searchContacts: (filterGroups = [], properties = [], limit = 50, after = null) =>
       client.post(`${base}/search`, { filterGroups, properties, limit, after }),
     updateContact: (id, properties) =>
@@ -135,7 +136,7 @@ function makeContacts(client) {
     batchCreateContact: (payload) => client.post(`${base}/batch/create`, payload),
     batchSearchContact: (payload) => client.post(`${base}/batch/read`, payload),
     batchUpdateContact: (payload) => client.post(`${base}/batch/update`, payload),
-    batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload, { params }),
+    batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload),
 
     // Delete Batch Contact Will be added later
   };
