@@ -1,9 +1,12 @@
 # Changelog
 
-## 2.1.0 – 2026-05-07
+## 2.1.3 – 2026-05-07
+### Added
+  - Add Batch operation on parentObject and custom object
+## 2.1.2 – 2026-05-07
 ### Added
   - Add fetch get contact based on idProperty
-## 2.1.0 – 2026-05-06
+## 2.1.1 – 2026-05-06
 ### Added
   - Add batch API Function (create,read,update)
 ## 2.1.0 – 2026-03-30

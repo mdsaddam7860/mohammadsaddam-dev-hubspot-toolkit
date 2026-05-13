@@ -137,6 +137,12 @@ function makeDeals(client) {
     findOrCreateCompanyByDomain,
     createDealWithAssociations,
     getDealByCustomField,
+
+    // --------------------------Batch APis---------------------------
+    batchCreate: (payload) => client.post(`${base}/batch/create`, payload),
+    batchSearch: (payload) => client.post(`${base}/batch/read`, payload),
+    batchUpdate: (payload) => client.post(`${base}/batch/update`, payload),
+    batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload),
   };
 }
 

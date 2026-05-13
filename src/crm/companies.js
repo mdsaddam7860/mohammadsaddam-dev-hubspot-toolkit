@@ -96,6 +96,12 @@ function makeCompanies(client) {
       client.patch(`${base}/${id}`, toPropertiesObject(props)),
     getAllCompanies,
     getCompanyByCustomField,
+
+    // --------------------------Batch APis---------------------------
+    batchCreateCompany: (payload) => client.post(`${base}/batch/create`, payload),
+    batchSearchCompany: (payload) => client.post(`${base}/batch/read`, payload),
+    batchUpdateCompany: (payload) => client.post(`${base}/batch/update`, payload),
+    batchUpsert: (payload) => client.post(`${base}/batch/upsert`, payload),
   };
 }
 
