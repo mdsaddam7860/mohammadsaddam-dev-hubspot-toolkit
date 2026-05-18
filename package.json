@@ -1,6 +1,6 @@
 {
   "name": "@mohammadsaddam-dev/hubspot-toolkit",
-  "version": "2.0.6",
+  "version": "2.1.0",
   "description": "Opinionated lightweight HubSpot helper toolkit (contacts, companies, deals, associations, properties)",
   "main": "src/index.js",
   "types": "src-ts/index.d.ts",
