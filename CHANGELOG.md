@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.3 – 2026-05-018
+### Added
+  - Add Batch operation in Associations
 ## 2.1.3 – 2026-05-07
 ### Added
   - Add Batch operation on parentObject and custom object

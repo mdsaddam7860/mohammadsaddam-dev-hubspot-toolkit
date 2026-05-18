@@ -79,6 +79,55 @@ function makeAssociations(client) {
       payload,
     );
   }
+  async function batchAssociateLabelled(fromObjectType, toObjectType, payload) {
+    if (!fromObjectType || !toObjectType || !payload || !payload.length) {
+      throw new Error('Missing required parameters for batch association');
+    }
+    // This sends EVERYTHING in the payload.inputs array in one go
+    return client.post(
+      `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/create`,
+      payload,
+    );
+  }
+  async function batchAssociateDefault(fromObjectType, toObjectType, payload) {
+    if (!fromObjectType || !toObjectType || !payload || !payload.length) {
+      throw new Error('Missing required parameters for batch association');
+    }
+    // This sends EVERYTHING in the payload.inputs array in one go
+    return client.post(
+      `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/associate/default`,
+      payload,
+    );
+  }
+
+  async function retrieveAssociations(
+    fromObjectType,
+    toObjectType,
+    payload,
+    params = {},
+  ) {
+    // Guard clause for required path variables
+    if (!fromObjectType || !toObjectType) {
+      throw new Error(
+        'Missing required parameters (fromObjectType, toObjectType) for batch association read',
+      );
+    }
+
+    // Guard clause for the POST body payload
+    if (!inputs || !Array.isArray(inputs)) {
+      throw new Error(
+        'Inputs array is required in the body payload for batch association read',
+      );
+    }
+
+    // 1. Used backticks (``) for path parameter interpolation
+    // 2. Fixed client.pot -> client.post
+    return client.post(
+      `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/read`,
+      payload,
+      { params },
+    );
+  }
 
   /** Convenience helpers (backward-compatible) */
   const associateContactToCompany = (contactId, companyId, type = 'contact_to_company') =>
@@ -103,6 +152,10 @@ function makeAssociations(client) {
     associateContactToDeal,
     associateCompanyToDeal,
     getAssociations,
+    // --------------------- Batch Associations ----------------------
+    batchAssociateLabelled,
+    batchAssociateDefault,
+    retrieveAssociations,
   };
 }
 
